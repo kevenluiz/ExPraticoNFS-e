@@ -1,0 +1,203 @@
+<!DOCTYPE html>  
+<html lang="pt-BR">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Emissão de NFS-e</title>  
+    <style>  
+        body {  
+            font-family: Arial, sans-serif;  
+            margin: 20px;  
+            background-color: #1e1e1e; 
+            color: #ffffff;   
+        }  
+        h1 {  
+            text-align: center;  
+            color: #007BFF;   
+        }  
+        form {  
+            background: #2a2a2a;  
+            border-radius: 8px;  
+            padding: 20px;  
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);  
+        }  
+        label {  
+            display: block;  
+            margin: 10px 0 5px;  
+            color: #ffffff;  
+        }  
+        input[type="number"], input[type="text"] {  
+            width: calc(100% - 20px);  
+            padding: 10px;  
+            margin-bottom: 15px;  
+            border: 1px solid #555;   
+            border-radius: 4px;  
+            background-color: #3a3a3a; 
+            color: #ffffff;   
+        }  
+        input[type="number"]:invalid,   
+        input[type="text"]:invalid {  
+            border-color: #ff4d
+
+```html  
+<!DOCTYPE html>  
+<html lang="pt-BR">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Emissão de NFS-e</title>  
+    <style>  
+        body {  
+            font-family: Arial, sans-serif;  
+            margin: 20px;  
+            background-color: #121212;   
+            color: #E0E0E0;   
+        }  
+        h1 {  
+            text-align: center;  
+            color: #BB86FC;  
+        }  
+        form {  
+            background: #1E1E1E;   
+            border-radius: 8px;  
+            padding: 20px;  
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);  
+        }  
+        label {  
+            display: block;  
+            margin: 10px 0 5px;  
+        }  
+        input[type="number"], input[type="text"] {  
+            width: calc(100% - 20px);  
+            padding: 10px;  
+            margin-bottom: 15px;  
+            border: 1px solid #444;   
+            border-radius: 4px;  
+            background-color: #2A2A2A;   
+            color: #E0E0E0; 
+            transition: border 0.3s;  
+        }  
+        input[type="number"]:invalid,   
+        input[type="text"]:invalid {  
+            border-color: red;   
+        }  
+        input[type="number"]:valid,   
+        input[type="text"]:valid {  
+            border-color: #BB86FC;  
+        }  
+        button {  
+            background-color: #6200EE;   
+            color: white;  
+            padding: 10px;  
+            border: none;  
+            border-radius: 4px;  
+            cursor: pointer;  
+            width: 100%;  
+            transition: background-color 0.3s;  
+        }  
+        button:hover {  
+            background-color: #3700B3;   
+        }  
+        .note {  
+            margin-top: 20px;  
+            padding: 15px;  
+            background-color: #2A2A2A;   
+            border-radius: 8px;  
+            border: 1px solid #444;  
+        }  
+        .alert {  
+            color: red;  
+            margin-top: 10px;  
+            display: none;  
+        }  
+    </style>  
+</head>  
+<body>  
+
+    <h1>Emissão de Nota Fiscal de Serviço (NFS-e)</h1>  
+    
+    <form id="nfsForm">  
+        <label for="valorVenda">Valor da Venda (R$): <span style="color: red;">*</span></label>  
+        <input type="number" id="valorVenda" required step="0.01" min="0">  
+
+        <label for="itens">Itens Vendidos: <span style="color: red;">*</span></label>  
+        <input type="text" id="itens" required>  
+
+        <label for="irpf">Porcentagem do IRPF (%): <span style="color: red;">*</span></label>  
+        <input type="number" id="irpf" required min="0">  
+
+        <label for="pis">Porcentagem do PIS (%): <span style="color: red;">*</span></label>  
+        <input type="number" id="pis" required min="0">  
+
+        <label for="cofins">Porcentagem do COFINS (%): <span style="color: red;">*</span></label>  
+        <input type="number" id="cofins" required min="0">  
+
+        <label for="inss">Porcentagem do INSS (%): <span style="color: red;">*</span></label>  
+        <input type="number" id="inss" required min="0">  
+
+        <label for="issqn">Porcentagem do ISSQN (%): <span style="color: red;">*</span></label>  
+        <input type="number" id="issqn" required min="0">  
+
+        <button type="submit">Emitir NFS-e</button>  
+        <div id="alert" class="alert">Todos os campos são obrigatórios e devem ser preenchidos corretamente.</div>  
+    </form>  
+
+    <div class="note" id="notaFiscal" style="display: none;"></div>  
+
+    <script>  
+        document.getElementById('nfsForm').addEventListener('submit', function (event) {  
+            event.preventDefault();  
+            const alertDiv = document.getElementById('alert');  
+            alertDiv.style.display = 'none';  
+
+            
+            const inputs = document.querySelectorAll('#nfsForm input');  
+            let isValid = true;  
+
+            inputs.forEach(input => {  
+                if (!input.checkValidity()) {  
+                    isValid = false;  
+                }  
+            });  
+
+            if (!isValid) {  
+                alertDiv.style.display = 'block';  
+                return;  
+            }  
+
+            const valorVenda = parseFloat(document.getElementById('valorVenda').value);  
+            const itensVendidos = document.getElementById('itens').value;  
+            const irpfPercent = parseFloat(document.getElementById('irpf').value);  
+            const pisPercent = parseFloat(document.getElementById('pis').value);  
+            const cofinsPercent = parseFloat(document.getElementById('cofins').value);  
+            const inssPercent = parseFloat(document.getElementById('inss').value);  
+            const issqnPercent = parseFloat(document.getElementById('issqn').value);  
+
+            const irpf = (valorVenda * irpfPercent) / 100;  
+            const pis = (valorVenda * pisPercent) / 100;  
+            const cofins = (valorVenda * cofinsPercent) / 100;  
+            const inss = (valorVenda * inssPercent) / 100;  
+            const issqn = (valorVenda * issqnPercent) / 100;  
+
+            const notaFiscal = `  
+                <h2>Nota Fiscal de Serviço</h2>  
+                <p><strong>Valor da Venda:</strong> R$ ${valorVenda.toFixed(2)}</p>  
+                <p><strong>Itens Vendidos:</strong> ${itensVendidos}</p>  
+                <p><strong>Impostos Calculados:</strong></p>  
+                <ul>  
+                    <li>IRPF: R$ ${irpf.toFixed(2)} (${irpfPercent}%)</li>  
+                    <li>PIS: R$ ${pis.toFixed(2)} (${pisPercent}%)</li>  
+                    <li>COFINS: R$ ${cofins.toFixed(2)} (${cofinsPercent}%)</li>  
+                    <li>INSS: R$ ${inss.toFixed(2)} (${inssPercent}%)</li>  
+                    <li>ISSQN: R$ ${issqn.toFixed(2)} (${issqnPercent}%)</li>  
+                </ul>  
+            `;  
+
+            const notaFiscalDiv = document.getElementById('notaFiscal');  
+            notaFiscalDiv.innerHTML = notaFiscal;  
+            notaFiscalDiv.style.display = 'block';  
+        });  
+    </script>  
+
+</body>  
+</html>
